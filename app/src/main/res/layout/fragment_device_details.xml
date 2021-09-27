@@ -42,13 +42,13 @@
         app:layout_constraintTop_toBottomOf="@id/tv_title_name"/>
 
     <TextView
-        android:id="@+id/tv_title_status"
+        android:id="@+id/tv_title_platform"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/dark_grey"
-        android:text="@string/fragment_details_status"
+        android:text="@string/fragment_details_platform"
         android:layout_marginTop="16dp"
         android:layout_marginStart="32dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +65,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginStart="32dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title_status"/>
+        app:layout_constraintTop_toBottomOf="@id/tv_title_platform"/>
 
     <TextView
         android:id="@+id/tv_title_reviews"

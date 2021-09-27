@@ -4,17 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.a1valetdevices.R
 import com.example.a1valetdevices.databinding.FragmentHomeBinding
+import com.example.a1valetdevices.interfaces.DeviceInteractionListener
 import com.example.a1valetdevices.models.*
 import com.example.a1valetdevices.ui.adapters.DevicesListAdapter
 import com.example.a1valetdevices.ui.adapters.RecentReleasesAdapter
 import com.example.a1valetdevices.ui.viewmodels.DevicesHomeViewModel
-import com.example.a1valetdevices.util.hideKeyboard
 import com.example.a1valetdevices.util.toothpick.ActivityScope
 import com.example.a1valetdevices.util.toothpick.ApplicationScope
 import com.example.a1valetdevices.util.toothpick.ViewModelScope
@@ -25,7 +26,7 @@ import toothpick.smoothie.viewmodel.installViewModelBinding
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FragmentHome: Fragment() {
+class FragmentHome: Fragment(), DeviceInteractionListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -69,10 +70,20 @@ class FragmentHome: Fragment() {
             when (it) {
                 is DeviceHomeStates.InitialState                ->  loadInitialState(it.devicesResponse)
                 is DeviceHomeStates.DisplayQueryResultsState    ->  updateDevicesListAdapter(it.deviceList)
-                is DeviceHomeStates.DisplayDeviceDetailsState   ->  findNavController().navigate(R.id.frag_home_to_details)
+                is DeviceHomeStates.DisplayDeviceDetailsState   ->  displayDeviceDetails(it.device)
             }
         }
 
+    }
+
+    override fun displayDeviceDetails(device: Device) {
+        val bundle = bundleOf(
+            "name" to device.name,
+            "os" to device.os,
+            "platform" to device.platform.toString(),
+            "size" to device.screenSize,
+            "imageUrl" to device.imageUrl)
+        findNavController().navigate(R.id.frag_home_to_details, bundle)
     }
 
     private fun loadInitialState(devicesResponse: DevicesResponse) {
@@ -101,7 +112,7 @@ class FragmentHome: Fragment() {
     private fun updateRecentReleasesView(devicesList: List<Device>) {
         devicesList.sortedByDescending { it.releaseDate }.take(3).let { recentDevices ->
             binding.ilRecentReleases.rvRecentReleases.apply {
-                adapter = RecentReleasesAdapter(recentDevices)
+                adapter = RecentReleasesAdapter(recentDevices, this@FragmentHome)
                 layoutManager = LinearLayoutManager(binding.root.context, RecyclerView.HORIZONTAL, false)
                 setHasFixedSize(true)
             }
@@ -111,7 +122,7 @@ class FragmentHome: Fragment() {
     private fun updateDevicesListAdapter(devicesList: List<Device>?) {
         devicesList?.let {
             binding.rvDevicesList.apply {
-                adapter = DevicesListAdapter(it)
+                adapter = DevicesListAdapter(it, this@FragmentHome)
                 layoutManager = LinearLayoutManager(binding.root.context, RecyclerView.VERTICAL, false)
                 setHasFixedSize(true)
             }
