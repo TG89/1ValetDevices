@@ -1,6 +1,5 @@
 package com.example.a1valetdevices.interfaces
 
-import com.example.a1valetdevices.models.Device
 import com.example.a1valetdevices.models.DevicesResponse
 import retrofit2.Call
 import retrofit2.http.GET
@@ -12,8 +11,8 @@ import retrofit2.http.Query
 interface AndroidDevicesAPI {
 
     /**
-     * Get all devices
-     * made up example
+     * API to get all devices related information
+     * note: made up API call examples
      */
     @GET("devices?")
     fun getAllDevicesList(): Call<DevicesResponse>

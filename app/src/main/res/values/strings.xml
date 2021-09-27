@@ -18,8 +18,8 @@
     <string name="fragment_home_date">Today\'s Date</string>
     <string name="fragment_home_all_devices">All Devices</string>
     <string name="fragment_home_device_stats">Device Stats</string>
-    <string name="fragment_home_info_both_platforms">Android: %1s iOS: %2s</string>
-    <string name="fragment_home_info_total">Total: %1s</string>
+    <string name="fragment_home_info_both_platforms">Android: %1s \u0020\u0020 iOS: %2s</string>
+    <string name="fragment_home_info_total">Total Devices: %1s</string>
 
     <string name="fragment_details_title">Device Details</string>
     <string name="fragment_details_name">Name - %1s</string>

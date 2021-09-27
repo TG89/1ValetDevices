@@ -9,9 +9,11 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import com.example.a1valetdevices.databinding.ActivityMainBinding
+import com.example.a1valetdevices.ui.fragments.FragmentHome
 import com.example.a1valetdevices.util.hideKeyboard
 import com.example.a1valetdevices.util.toothpick.ActivityModule
 import com.example.a1valetdevices.util.toothpick.ActivityScope
@@ -59,13 +61,24 @@ class MainActivity : AppCompatActivity() {
         setupSearch()
     }
 
+    private fun initializeToothpick() {
+        KTP
+            .openRootScope()
+            .openSubScope(ApplicationScope::class.java)
+            .openSubScope(ActivityScope::class.java)
+            .installModules(ActivityModule(this))
+            .closeOnDestroy(this)
+            .inject(this)
+    }
+
     private fun setupSearch() {
         binding.svAppbarSearch.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                // TODO: check which fragment its on, and change if necessary (back to home)
-                Toast.makeText(applicationContext, query, Toast.LENGTH_SHORT).show()
                 applicationContext.hideKeyboard(binding.svAppbarSearch)
+                query?.let { searchQuery ->
+                    updateFragmentWithSearchQuery(searchQuery)
+                }
                 return false
             }
 
@@ -73,6 +86,15 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
         })
+    }
+
+    private fun updateFragmentWithSearchQuery(searchQuery: String) {
+        // TODO: check which fragment its on, and change if necessary (back to home)
+        val navHost = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        (navHost.childFragmentManager.fragments[0] as FragmentHome).updateSearchResults(searchQuery)
+        navHost.childFragmentManager.primaryNavigationFragment?.let {
+            (it as FragmentHome).updateSearchResults(searchQuery)
+        }
     }
 
     override fun onBackPressed() {
@@ -97,13 +119,4 @@ class MainActivity : AppCompatActivity() {
                 || super.onSupportNavigateUp()
     }
 
-    private fun initializeToothpick() {
-        KTP
-            .openRootScope()
-            .openSubScope(ApplicationScope::class.java)
-            .openSubScope(ActivityScope::class.java)
-                .installModules(ActivityModule(this))
-                .closeOnDestroy(this)
-            .inject(this)
-    }
 }
