@@ -11,6 +11,7 @@ data class Device (
     var platform: Platform? = null,
     var releaseDate: Long? = null,
     var os: String? = null,
+    var screenSize: String? = null,
     var description: String? = null,
     var imageUrl: String? = null,
 ) {
@@ -26,6 +27,7 @@ data class Device (
         data.platform?.let { platform = it }
         data.releaseDate?.let { releaseDate = it }
         data.os?.let { os = it }
+        data.screenSize?.let { screenSize = it }
         data.description?.let { description = it }
         data.imageUrl?.let { imageUrl = it }
     }

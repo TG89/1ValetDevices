@@ -49,7 +49,6 @@ class FragmentHome: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupObservers()
-        setupSearchBar()
         setupDate()
     }
 
@@ -59,25 +58,12 @@ class FragmentHome: Fragment() {
         binding.tvTitleTodaysDate.text = date
     }
 
-    //                                                      TODO: refine and reduce
-    private fun setupSearchBar() {
-//        binding.svSearchDevice.apply {
-//            setOnEditorActionListener { v, actionId, _ ->
-//                viewModel.searchDevice(v.text.toString())
-//                requireContext().hideKeyboard(this)
-//                false
-//            }
-//        }
-    }
-
     private fun setupObservers() {
-        viewModel.apply {
-            deviceResponseLiveData.observe(viewLifecycleOwner) { devicesResponse ->
-                updateHomeScreenTexts(devicesResponse)
-                devicesResponse.devices?.let {
-                    updateRecentReleasesView(it)
-                    updateDevicesListAdapter(it)
-                }
+        viewModel.deviceResponseLiveData.observe(viewLifecycleOwner) { devicesResponse ->
+            updateHomeScreenTexts(devicesResponse)
+            devicesResponse.devices?.let {
+                updateRecentReleasesView(it)
+                updateDevicesListAdapter(it)
             }
         }
     }

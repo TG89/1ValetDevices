@@ -1,19 +1,16 @@
 package com.example.a1valetdevices
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.appcompat.widget.Toolbar
+import androidx.appcompat.widget.SearchView
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupWithNavController
 import com.example.a1valetdevices.databinding.ActivityMainBinding
 import com.example.a1valetdevices.util.hideKeyboard
 import com.example.a1valetdevices.util.toothpick.ActivityModule
@@ -26,7 +23,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,8 +40,7 @@ class MainActivity : AppCompatActivity() {
             drawerLayout,
             binding.appbarToolbar,
             R.string.nav_drawer_open,
-            R.string.nav_drawer_close
-        ) {
+            R.string.nav_drawer_close) {
             override fun onDrawerClosed(drawerView: View) {
                 // Triggered once the drawer closes
                 super.onDrawerClosed(drawerView)
@@ -61,14 +56,30 @@ class MainActivity : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
+        setupSearch()
+    }
 
+    private fun setupSearch() {
+        binding.svAppbarSearch.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                // TODO: check which fragment its on, and change if necessary (back to home)
+                Toast.makeText(applicationContext, query, Toast.LENGTH_SHORT).show()
+                applicationContext.hideKeyboard(binding.svAppbarSearch)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                return true
+            }
+        })
     }
 
     override fun onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START)
         } else {
-            // Checking for fragment count on back stack
+            // Check fragment count on back stack
             if (supportFragmentManager.backStackEntryCount > 0) {
                 // Go to the previous fragment
                 supportFragmentManager.popBackStack()

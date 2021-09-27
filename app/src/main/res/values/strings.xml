@@ -22,10 +22,10 @@
     <string name="fragment_home_info_total">Total: %1s</string>
 
     <string name="fragment_details_title">Device Details</string>
-    <string name="fragment_details_name">Name: %1s</string>
-    <string name="fragment_details_os">Os: %1s</string>
-    <string name="fragment_details_status">Status: %1s</string>
-    <string name="fragment_details_size">Size: %1s</string>
-    <string name="fragment_details_reviews">Reviews: %1s</string>
+    <string name="fragment_details_name">Name - %1s</string>
+    <string name="fragment_details_os">Os - %1s</string>
+    <string name="fragment_details_status">Status - %1s</string>
+    <string name="fragment_details_size">Size - %1s</string>
+    <string name="fragment_details_reviews">Reviews: </string>
     <string name="nav_header_title">1Valet Devices</string>
 </resources>
